@@ -1,8 +1,10 @@
 package net.spx.demosqlite03.DAO;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import net.spx.demosqlite03.DTO.CatDTO;
 import net.spx.demosqlite03.DbHelper.MyDbHelper;
@@ -13,7 +15,8 @@ public class CatDAO {
     MyDbHelper dbHelper;
     SQLiteDatabase db;
 
-    public CatDAO(){
+    public CatDAO(Context ct){
+        dbHelper = new MyDbHelper( ct ) ;
         db = dbHelper.getWritableDatabase();
     }
 
@@ -34,6 +37,8 @@ public class CatDAO {
                 listCat.add( objCat );
 
             }while (c.moveToNext());
+        }else{
+            Log.d("zzzzzzzzzzzz", "getList: Không có dữ liệu");
         }
         return  listCat;
     }

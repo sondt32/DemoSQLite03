@@ -28,6 +28,10 @@ public class MyDbHelper extends SQLiteOpenHelper {
 
         sqLiteDatabase.execSQL( sql_product );
 
+        //======== Thêm dòng dữ liệu ======
+        String insert_cat = "INSERT INTO tb_cat (name) VALUES ('Tivi'), ('Tủ lạnh'), ('Điều hòa') ";
+        sqLiteDatabase.execSQL( insert_cat );
+
     }
 
     @Override
