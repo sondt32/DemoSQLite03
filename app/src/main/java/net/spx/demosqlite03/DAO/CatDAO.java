@@ -1,0 +1,53 @@
+package net.spx.demosqlite03.DAO;
+
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
+import net.spx.demosqlite03.DTO.CatDTO;
+import net.spx.demosqlite03.DbHelper.MyDbHelper;
+
+import java.util.ArrayList;
+
+public class CatDAO {
+    MyDbHelper dbHelper;
+    SQLiteDatabase db;
+
+    public CatDAO(){
+        db = dbHelper.getWritableDatabase();
+    }
+
+    // hàm lấy danh sách thê loại
+    public ArrayList<CatDTO> getList(){
+
+        ArrayList<CatDTO> listCat = new ArrayList<>();
+
+        Cursor c = db.rawQuery("SELECT * FROM tb_cat ORDER BY name ASC ", null);
+        if(c.getCount()>0){
+            c.moveToFirst(); // đưa trỏ về đầu dòng
+            do {
+                CatDTO objCat = new CatDTO();
+                objCat.setId(     c.getInt(0)     );  // cách khác:  c.getInt( c.getColumnIndex("id"))
+                objCat.setName(   c.getString(1)  );
+
+                // cho đối tượng vào danh sách
+                listCat.add( objCat );
+
+            }while (c.moveToNext());
+        }
+        return  listCat;
+    }
+    // hàm thêm mới
+    public int addRow(CatDTO objCat){
+        ContentValues values = new ContentValues();
+        values.put("name", objCat.getName() );
+        long kq = db.insert("tb_cat",null, values );
+        return  (int) kq; // nêu kq > 0 thì là thêm thành công và id là kq.
+        // yêu cầu id của bảng phải là autoincrement
+    }
+
+
+
+
+
+}
