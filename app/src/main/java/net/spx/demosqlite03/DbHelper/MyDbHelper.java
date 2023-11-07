@@ -18,15 +18,26 @@ public class MyDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         // câu lệnh tạo bảng viết ở đây
+        // tạo bảng thê loại:
+        String sql_cat = "CREATE TABLE tb_cat ( id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT UNIQUE NOT NULL );";
 
+        sqLiteDatabase.execSQL( sql_cat ); // tạo xong bảng tb_cat
 
+        // tạo bảng sản phẩm
+        String sql_product = "CREATE TABLE tb_product ( id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, price INTEGER DEFAULT (0) NOT NULL,id_cat INTEGER NOT NULL CONSTRAINT fk_pro_cat REFERENCES tb_cat (id) );";
 
-
+        sqLiteDatabase.execSQL( sql_product );
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+        // cập nhật
+        if(i<i1){
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS  tb_product");
+            // tb_product là bảng bên nhiều phải xóa trước
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS  tb_cat");
 
+        }
     }
 }
